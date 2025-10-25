@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang=ja>
+<head>
+<meta charset=utf-8>
+<style>
+.all { width: 100%; margin-top:0px; font-size:1.3em}
+#o {font-size:5.2em}
+#c {font-size:2.6em; margin-top:20px}
+p {font-size:1.9em; margin-top:0px}
+#t {font-size:1.3em; margin-top:0px}
+</style>
+</head>
+<body>
+<p style="color:green" onclick=secret_q()>Ver.1.0.37</p>
+<p id=t></p>
+<textarea class=all id=q rows=10 value=ここに文字数を調べたい文字を入力></textarea>
+<br>
+<input class=all id=o disabled>
+<input class=all id=c disabled>
+<script>
+tex_q=document.getElementById("q")
+inp_o=document.getElementById("o")
+inp_c=document.getElementById("c")
+p_t=document.getElementById("t")
+inp_o_value=""
+is_dev=false
+is=true
+secret_i=0
+function secret_q(id=0){
+    if(id==1){alert("設定が終了しました。")}
+    secret_i++
+    if(secret_i<10){return;}
+    secret_i=0
+    secret_q_answer=Number(prompt("設定IDを入力してください。"))
+    if (secret_q_answer==1){keiryo();secret_q(1);f_script(0);return;}
+    if (secret_q_answer==2){dev_mode();secret_q(1);f_script(0);return;}
+    alert("入力形式が不正です")
+}
+function dev_mode(){
+    is_dev=confirm("開発者プログラム、デバッグモードを\n利用しますか?\n利用するとデバッグが出てくるかもです\n起動したからといって\n処理に影響があるわけではありません。")
+    if(is_dev){
+        alert("デバッグモードを起動します")
+        inp_c.style.display="block"
+    }else{
+        inp_c.style.display="none"
+    }
+}
+function keiryo(){
+    is=confirm("軽量化プログラムを起動しますか?\nこの質問はページをリロードしてから１回だけで、\n起動するとPCの処理が軽くなります。\nけれども、文字数演算に少し時間がかかるようになります。\n大体30万行を0.6秒程度(バージョンによって変動。v1.0.0の場合)")
+    if(is){
+        p_t.innerHTML="軽量化 : 有効"
+        p_t.style.color="gold"
+    }else{
+        p_t.innerHTML="軽量化 : 無効"
+        p_t.style.color="gray"
+    }
+    times=[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560,570,580,590,600,610,620,630,640,650,660,670,680,690,700,710,720,730,740,750,760,770,780,790,800,810,820,830,840,850,860,870,880,890,900,910,920,930,940,950,960,970,980,990,1000]
+}
+keiryo()
+dev_mode()
+tex_q.addEventListener('input', ()=> {f_script()})
+function f_script(f_color=1){
+    level=Math.floor(inp_o_value/(500000/times.length))
+    if(level>=times.length){level=times.length-1}
+    if(tex_q.value==="./command\n\\settings\nkeiryo\n" || tex_q.value==="./command\n\\settings\nid-001\n"){keiryo()}
+    if(tex_q.value==="./command\n\\settings\ndeveloper\n" || tex_q.value==="./command\n\\settings\nid-002\n"){dev_mode()}
+    console.log(`level:${level}  ,  stoptime:${times[level]}  ,  stop?:${is}`)
+    setTimeout(()=>{
+        inp_o_value=tex_q.value.length
+        if(is_dev){
+            inp_o.value=`length : ${inp_o_value}`
+        }else{
+            inp_o.value=inp_o_value
+        }
+    },times[level]*is)
+    if(f_color==1){
+        inp_o_color=[]
+        for (let i=0;i<3;i++){
+            inp_o_color[i]=Math.floor(Math.random()*256)
+        }
+        inp_o.style.color=`rgb(${inp_o_color[0]}, ${inp_o_color[1]}, ${inp_o_color[2]})`
+        inp_c.value=`rgb-colorcode : ${inp_o.style.color}`
+        inp_c.style.color=inp_o.style.color
+    }
+}
+</script>
+</body>
+</html>
