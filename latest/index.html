@@ -11,7 +11,7 @@ p {font-size:1.9em; margin-top:0px}
 </style>
 </head>
 <body>
-<p style="color:green" onclick=secret_q()>Ver.1.0.37</p>
+<p style="color:green" onclick=secret_q()>Ver.1.0.43</p>
 <p id=t></p>
 <textarea class=all id=q rows=10 value=ここに文字数を調べたい文字を入力></textarea>
 <br>
@@ -23,8 +23,7 @@ inp_o=document.getElementById("o")
 inp_c=document.getElementById("c")
 p_t=document.getElementById("t")
 inp_o_value=""
-is_dev=false
-is=true
+isall={"stop":true,"dev":false}
 secret_i=0
 function secret_q(id=0){
     if(id==1){alert("設定が終了しました。")}
@@ -37,8 +36,8 @@ function secret_q(id=0){
     alert("入力形式が不正です")
 }
 function dev_mode(){
-    is_dev=confirm("開発者プログラム、デバッグモードを\n利用しますか?\n利用するとデバッグが出てくるかもです\n起動したからといって\n処理に影響があるわけではありません。")
-    if(is_dev){
+    isall["dev"]=confirm("開発者プログラム、デバッグモードを\n利用しますか?\n利用するとデバッグが出てくるかもです\n起動したからといって\n処理に影響があるわけではありません。")
+    if(isall["dev"]){
         alert("デバッグモードを起動します")
         inp_c.style.display="block"
     }else{
@@ -46,15 +45,15 @@ function dev_mode(){
     }
 }
 function keiryo(){
-    is=confirm("軽量化プログラムを起動しますか?\nこの質問はページをリロードしてから１回だけで、\n起動するとPCの処理が軽くなります。\nけれども、文字数演算に少し時間がかかるようになります。\n大体30万行を0.6秒程度(バージョンによって変動。v1.0.0の場合)")
-    if(is){
+    isall["stop"]=confirm("軽量化プログラムを起動しますか?\nこの質問はページをリロードしてから１回だけで、\n起動するとPCの処理が軽くなります。\nけれども、文字数演算に少し時間がかかるようになります。\n大体30万行を0.6秒程度(バージョンによって変動。v1.0.0の場合)")
+    if(isall["stop"]){
         p_t.innerHTML="軽量化 : 有効"
         p_t.style.color="gold"
     }else{
         p_t.innerHTML="軽量化 : 無効"
         p_t.style.color="gray"
     }
-    times=[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560,570,580,590,600,610,620,630,640,650,660,670,680,690,700,710,720,730,740,750,760,770,780,790,800,810,820,830,840,850,860,870,880,890,900,910,920,930,940,950,960,970,980,990,1000]
+    times=[20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700,720,740,760,780,800,820,840,860,880,900,920,940,960,980,1000,1020,1040,1060,1080,1100,1120,1140,1160,1180,1200,1220,1240,1260,1280,1300,1320,1340,1360,1380,1400,1420,1440,1460,1480,1500,1520,1540,1560,1580,1600,1620,1640,1660,1680,1700,1720,1740,1760,1780,1800,1820,1840,1860,1880,1900,1920,1940,1960,1980,2000]
 }
 keiryo()
 dev_mode()
@@ -64,15 +63,15 @@ function f_script(f_color=1){
     if(level>=times.length){level=times.length-1}
     if(tex_q.value==="./command\n\\settings\nkeiryo\n" || tex_q.value==="./command\n\\settings\nid-001\n"){keiryo()}
     if(tex_q.value==="./command\n\\settings\ndeveloper\n" || tex_q.value==="./command\n\\settings\nid-002\n"){dev_mode()}
-    console.log(`level:${level}  ,  stoptime:${times[level]}  ,  stop?:${is}`)
+    console.log(`level:${level}, stoptime:${times[level]}, stop:${isall["stop"]}, developer:${isall["dev"]}`)
     setTimeout(()=>{
         inp_o_value=tex_q.value.length
-        if(is_dev){
+        if(isall["dev"]){
             inp_o.value=`length : ${inp_o_value}`
         }else{
             inp_o.value=inp_o_value
         }
-    },times[level]*is)
+    },times[level]*isall["stop"])
     if(f_color==1){
         inp_o_color=[]
         for (let i=0;i<3;i++){
