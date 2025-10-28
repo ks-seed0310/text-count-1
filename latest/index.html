@@ -11,7 +11,7 @@ p {font-size:1.9em; margin-top:0px; }
 </style>
 </head>
 <body>
-<p style="color:green" onclick=secret_q()>Ver.1.0.43</p>
+<p style="color:green" onclick=secret_q()>Ver.1.0.44</p>
 <p id=t></p>
 <textarea class=all id=q rows=10 value=ここに文字数を調べたい文字を入力></textarea>
 <br>
@@ -57,7 +57,7 @@ function keiryo(){
 }
 keiryo()
 dev_mode()
-tex_q.addEventListener('input', ()=> {f_script()})
+tex_q.addEventListener('keyup', ()=> {f_script()})
 function f_script(f_color=1){
     level=Math.floor(inp_o_value/(500000/times.length))
     if(level>=times.length){level=times.length-1}
